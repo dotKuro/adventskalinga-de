@@ -1,14 +1,24 @@
+use advent_calendar::app::Router;
+use advent_calendar::css::StyleReset;
 use yew::prelude::*;
 
 #[function_component]
 fn App() -> Html {
     html! {
-        <div>
-        {"Hello World"}
-        </div>
+        <Router />
+    }
+}
+
+#[function_component]
+fn Root() -> Html {
+    html! {
+        <>
+            <StyleReset />
+            <App />
+        </>
     }
 }
 
 fn main() {
-    yew::Renderer::<App>::new().render();
+    yew::Renderer::<Root>::new().render();
 }
