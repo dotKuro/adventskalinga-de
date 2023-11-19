@@ -1,4 +1,5 @@
 use advent_calendar::app::Router;
+use advent_calendar::app::SessionIdProvider;
 use advent_calendar::css::StyleReset;
 use yew::prelude::*;
 
@@ -12,10 +13,10 @@ fn App() -> Html {
 #[function_component]
 fn Root() -> Html {
     html! {
-        <>
+        <SessionIdProvider>
             <StyleReset />
             <App />
-        </>
+        </SessionIdProvider>
     }
 }
 
