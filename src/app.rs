@@ -9,16 +9,9 @@ use yew::prelude::*;
 #[function_component]
 pub fn App() -> Html {
     html! {
-        <Router />
-    }
-}
-
-#[function_component]
-pub fn Root() -> Html {
-    html! {
         <SessionIdProvider>
             <StyleReset />
-            <App />
+            <Router />
         </SessionIdProvider>
     }
 }
