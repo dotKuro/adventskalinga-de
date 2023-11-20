@@ -8,10 +8,14 @@ use yew::prelude::*;
 
 #[function_component]
 pub fn App() -> Html {
+    let fallback = html! {<div>{"Loading..."}</div>};
+
     html! {
         <SessionIdProvider>
             <StyleReset />
-            <Router />
+            <Suspense {fallback}>
+                <Router />
+            </Suspense>
         </SessionIdProvider>
     }
 }
