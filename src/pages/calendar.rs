@@ -135,7 +135,6 @@ pub fn Calendar() -> Html {
             <div class={calendar_styles}>
                 { doors }
             </div>
-            { today }
         </div>
     }
 }
