@@ -27,6 +27,7 @@ fn large_container_styles() -> Style {
 fn small_calendar_styles() -> Style {
     Style::new(format!(
         r#"
+            display: block;
             box-sizing: border-box;
             height: 180px;
             padding: 4px;
