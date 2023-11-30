@@ -6,6 +6,8 @@ use yew_router::prelude::*;
 pub enum Route {
     #[at("/")]
     Calendar,
+    #[at("/puzzle/:number")]
+    Puzzle { number: u8 },
     #[at("/*")]
     NotFound,
 }
@@ -13,6 +15,13 @@ pub enum Route {
 fn switch(route: Route) -> Html {
     match route {
         Route::Calendar => html! { <Calendar /> },
+        Route::Puzzle { number } => {
+            if number <= 24 {
+                html! { <PuzzlePage number={number} /> }
+            } else {
+                html! { <NotFound /> }
+            }
+        }
         Route::NotFound => html! { <NotFound /> },
     }
 }

@@ -51,17 +51,41 @@ fn number_styles() -> Style {
     ))
     .expect("Css string should be correct")
 }
+#[derive(Properties, PartialEq, Clone)]
+pub struct ContainerProps {
+    pub number: u8,
+    pub active: bool,
+    pub children: Children,
+}
+
+#[styled_component]
+fn Container(props: &ContainerProps) -> Html {
+    if props.active {
+        html! {
+        <a class={container_styles()} href={format!("/puzzle/{}", props.number)}>
+            { props.children.clone() }
+        </a>
+        }
+    } else {
+        html! {
+        <div class={container_styles()}>
+            { props.children.clone() }
+        </div>
+        }
+    }
+}
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct DoorProps {
     pub number: u8,
     pub open: bool,
+    pub active: bool,
 }
 
 #[styled_component]
 pub fn Door(props: &DoorProps) -> Html {
     html! {
-        <div class={container_styles()}>
+        <Container number={props.number} active={props.active}>
             <img
                 src={format!("/assests/images/otter_{}.png", props.number)}
                 class={background_style(props.open)}
@@ -69,6 +93,6 @@ pub fn Door(props: &DoorProps) -> Html {
             <div class={number_styles()}>
                 {props.number}
             </div>
-        </div>
+        </Container>
     }
 }

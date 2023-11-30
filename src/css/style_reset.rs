@@ -10,6 +10,9 @@ pub fn StyleReset() -> Html {
                 margin: 0;
                 height: 100%;
             }
+            a {
+                text-decoration: none;
+            }
             "#)
         }/>
     }

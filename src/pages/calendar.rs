@@ -1,5 +1,6 @@
 mod door;
 
+use chrono::{DateTime, Local};
 use door::Door;
 use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
@@ -18,6 +19,11 @@ struct DoorData {
 #[derive(Serialize)]
 struct ListDoorsBody {
     session_id: String,
+}
+
+fn get_date_for_number(number: u8) -> DateTime<Local> {
+    let date_string = format!("2023-12-{:0>2}T00:00:00-00:00", number);
+    DateTime::parse_from_rfc3339(&date_string).unwrap().into()
 }
 
 fn container_styles() -> Style {
@@ -61,6 +67,7 @@ pub fn Calendar() -> Html {
             .collect::<Vec<DoorData>>()
     });
     let session_id = use_session_id();
+    let today = Local::now();
     {
         let doors_data = doors_data.clone();
         let session_id = session_id.to_string();
@@ -84,7 +91,11 @@ pub fn Calendar() -> Html {
         .iter()
         .map(|door_data| {
             html! {
-                <Door number={door_data.number} open={door_data.open} />
+                <Door
+                    number={door_data.number}
+                    open={door_data.open}
+                    active={today >= get_date_for_number(door_data.number)}
+                />
             }
         })
         .collect::<Vec<Html>>();
