@@ -9,6 +9,7 @@ use serde::{Deserialize, Serialize};
 use stylist::yew::styled_component;
 use stylist::Style;
 use yew::prelude::*;
+use yew_hooks::use_window_size;
 
 #[derive(Deserialize, Clone)]
 #[serde(tag = "type")]
@@ -86,7 +87,7 @@ fn container_styles() -> Style {
     .expect("Css string should be correct")
 }
 
-fn puzzle_styles() -> Style {
+fn large_puzzle_styles() -> Style {
     Style::new(format!(
         r#"
             display: flex;
@@ -101,10 +102,23 @@ fn puzzle_styles() -> Style {
     .expect("Css string should be correct")
 }
 
+fn small_puzzle_styles() -> Style {
+    Style::new(format!(
+        r#"
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            background-color: rgba(255, 255, 255, 0.9);
+        "#
+    ))
+    .expect("Css string should be correct")
+}
+
 fn title_styles() -> Style {
     Style::new(format!(
         r#"
             font-size: 80px;
+            text-align: center;
         "#
     ))
     .expect("Css string should be correct")
@@ -120,6 +134,15 @@ fn body_styles() -> Style {
     .expect("Css string should be correct")
 }
 
+fn error_styles() -> Style {
+    Style::new(format!(
+        r#"
+            text-align: center;
+        "#
+    ))
+    .expect("Css string should be correct")
+}
+
 #[derive(Properties, PartialEq, Clone)]
 pub struct PuzzlePageProps {
     pub number: u8,
@@ -127,6 +150,7 @@ pub struct PuzzlePageProps {
 
 #[styled_component]
 pub fn PuzzlePage(props: &PuzzlePageProps) -> Html {
+    let (width, _) = use_window_size();
     let puzzle_data = use_state(|| GetPuzzleResponse::Error {
         error: String::from("Es lädt noch..."),
     });
@@ -203,9 +227,15 @@ pub fn PuzzlePage(props: &PuzzlePageProps) -> Html {
         })
     };
 
+    let puzzle_styles = if width >= 1800.0 {
+        large_puzzle_styles()
+    } else {
+        small_puzzle_styles()
+    };
+
     html! {
         <div class={container_styles()}>
-            <div class={puzzle_styles()}>
+            <div class={puzzle_styles}>
                 <h1 class={title_styles()}>
                     { format!("Tag {}", props.number) }
                 </h1>
@@ -219,7 +249,11 @@ pub fn PuzzlePage(props: &PuzzlePageProps) -> Html {
                                 on_submit={handle_submit}
                                 />
                         },
-                        GetPuzzleResponse::Error { error } => html! { { error } },
+                        GetPuzzleResponse::Error { error } => html! {
+                            <div class={error_styles()}>
+                                { error }
+                            </div>
+                        },
                     } }
                 </div>
             </div>

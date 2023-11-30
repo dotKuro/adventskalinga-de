@@ -1,8 +1,9 @@
 use stylist::yew::styled_component;
 use stylist::Style;
 use yew::prelude::*;
+use yew_hooks::use_window_size;
 
-fn container_styles() -> Style {
+fn large_container_styles() -> Style {
     Style::new(format!(
         r#"
             box-sizing: border-box;
@@ -17,6 +18,28 @@ fn container_styles() -> Style {
             font-size: 24px;
             text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
             position: relative;
+            margin: 5px;
+        "#,
+    ))
+    .expect("Css string should be correct")
+}
+
+fn small_calendar_styles() -> Style {
+    Style::new(format!(
+        r#"
+            box-sizing: border-box;
+            height: 180px;
+            padding: 4px;
+            background-color: rgba(200, 200, 200, 0.6);
+            border-style: solid;
+            border-width: 2px;
+            border-color: white;
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            position: relative;
+            margin: 5px;
         "#,
     ))
     .expect("Css string should be correct")
@@ -31,12 +54,15 @@ fn background_style(open: bool) -> Style {
             position: absolute;
             top: 0;
             left: 0;
-            background-color: rgba(200, 200, 200, 0.8);
-            opacity: {};
+            display: {};
+            background-color: transparent;
+            @media (min-width: 1800px) {{
+                background-color: rgba(200, 200, 200, 0.8);
+            }}
         "#,
         match open {
-            true => "100%",
-            false => "0",
+            true => "block",
+            false => "none",
         }
     ))
     .expect("Css string should be correct")
@@ -60,15 +86,22 @@ pub struct ContainerProps {
 
 #[styled_component]
 fn Container(props: &ContainerProps) -> Html {
+    let (width, _) = use_window_size();
+    let container_styles = if width >= 1800.0 {
+        large_container_styles()
+    } else {
+        small_calendar_styles()
+    };
+
     if props.active {
         html! {
-        <a class={container_styles()} href={format!("/puzzle/{}", props.number)}>
+        <a class={container_styles} href={format!("/puzzle/{}", props.number)}>
             { props.children.clone() }
         </a>
         }
     } else {
         html! {
-        <div class={container_styles()}>
+        <div class={container_styles}>
             { props.children.clone() }
         </div>
         }

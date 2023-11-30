@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use stylist::yew::styled_component;
 use stylist::Style;
 use yew::prelude::*;
+use yew_hooks::use_window_size;
 
 use crate::app::session_id::use_session_id;
 
@@ -30,6 +31,7 @@ fn container_styles() -> Style {
     Style::new(format!(
         r#"
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
@@ -39,8 +41,16 @@ fn container_styles() -> Style {
     ))
     .expect("Css string should be correct")
 }
+fn title_styles() -> Style {
+    Style::new(format!(
+        r#"
+            font-size: 80px;
+        "#
+    ))
+    .expect("Css string should be correct")
+}
 
-fn calendar_styles() -> Style {
+fn large_calendar_styles() -> Style {
     Style::new(format!(
         r#"
             display: flex;
@@ -55,9 +65,20 @@ fn calendar_styles() -> Style {
     ))
     .expect("Css string should be correct")
 }
+fn small_calendar_styles() -> Style {
+    Style::new(format!(
+        r#"
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+        "#
+    ))
+    .expect("Css string should be correct")
+}
 
 #[styled_component]
 pub fn Calendar() -> Html {
+    let (width, _) = use_window_size();
     let doors_data = use_state(|| {
         (1u8..=24)
             .map(|number| DoorData {
@@ -100,9 +121,18 @@ pub fn Calendar() -> Html {
         })
         .collect::<Vec<Html>>();
 
+    let calendar_styles = if width >= 1800.0 {
+        large_calendar_styles()
+    } else {
+        small_calendar_styles()
+    };
+
     html! {
         <div class={container_styles()}>
-            <div class={calendar_styles()}>
+            <h1 class={title_styles()}>
+            {"Ingas Adventskalendar"}
+            </h1>
+            <div class={calendar_styles}>
                 { doors }
             </div>
         </div>
