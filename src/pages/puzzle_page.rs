@@ -35,7 +35,7 @@ enum PuzzleDescription {
 #[serde(tag = "type", content = "value")]
 enum PuzzleControl {
     ColorPicker(Option<Color>),
-    NumberPicker,
+    NumberPicker(i32),
 }
 
 #[derive(Deserialize, Serialize, Clone, PartialEq)]

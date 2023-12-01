@@ -1,6 +1,6 @@
 use crate::pages::puzzle_page::Color;
 
-use super::controls::ColorPicker;
+use super::controls::{ColorPicker, NumberPicker};
 use super::PuzzleControl;
 use yew::prelude::*;
 
@@ -24,10 +24,15 @@ pub fn Control(props: &ControlProps) -> Html {
                 }}
             />
         },
-        PuzzleControl::NumberPicker => html! {
-            <div>
-                { "NumberPicker" }
-            </div>
+        PuzzleControl::NumberPicker(number) => html! {
+            <NumberPicker
+                name={props.name.clone()}
+                picked_number={number}
+                on_change={{
+                    let on_change = props.on_change.clone();
+                    Callback::from(move |number: i32| on_change.emit(PuzzleControl::NumberPicker(number)))
+                }}
+            />
         },
     }
 }

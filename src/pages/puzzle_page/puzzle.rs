@@ -49,13 +49,14 @@ fn button_styles() -> Style {
             border-width: 3px;
             border-radius: 15px;
             padding: 10px;
+            color: #274e5c;
             background-color: #d89696;
 
             :active {{
                 background-color: #d88888;
             }}
             :hover {{
-                border-color: black;
+                border-color: #274e5c;
             }}
         "#
     ))
@@ -69,6 +70,7 @@ fn hint_styles() -> Style {
             flex-direction: column;
             margin: 30px;
             align-items: center;
+            text-align: center;
         "#
     ))
     .expect("Css string should be correct")

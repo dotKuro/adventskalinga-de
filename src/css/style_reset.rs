@@ -9,6 +9,7 @@ pub fn StyleReset() -> Html {
             html, body {
                 margin: 0;
                 height: 100%;
+                color: #274e5c;
             }
             a {
                 text-decoration: none;
