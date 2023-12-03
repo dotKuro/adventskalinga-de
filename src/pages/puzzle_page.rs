@@ -36,6 +36,7 @@ enum PuzzleDescription {
 enum PuzzleControl {
     ColorPicker(Option<Color>),
     NumberPicker(i32),
+    TextSelection(String, Vec<String>),
 }
 
 #[derive(Deserialize, Serialize, Clone, PartialEq)]

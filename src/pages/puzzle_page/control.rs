@@ -1,6 +1,6 @@
 use crate::pages::puzzle_page::Color;
 
-use super::controls::{ColorPicker, NumberPicker};
+use super::controls::{ColorPicker, NumberPicker, TextSelection};
 use super::PuzzleControl;
 use yew::prelude::*;
 
@@ -31,6 +31,17 @@ pub fn Control(props: &ControlProps) -> Html {
                 on_change={{
                     let on_change = props.on_change.clone();
                     Callback::from(move |number: i32| on_change.emit(PuzzleControl::NumberPicker(number)))
+                }}
+            />
+        },
+        PuzzleControl::TextSelection(selected_text, text_options) => html! {
+            <TextSelection
+                name={props.name.clone()}
+                selected_text={selected_text}
+                text_options={text_options.clone()}
+                on_change={{
+                    let on_change = props.on_change.clone();
+                    Callback::from(move |text: String| on_change.emit(PuzzleControl::TextSelection(text, text_options.clone())))
                 }}
             />
         },
